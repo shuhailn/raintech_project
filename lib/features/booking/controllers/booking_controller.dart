@@ -147,23 +147,28 @@ class BookingController extends ChangeNotifier {
     final success = await _bookingService.bookRoom(reservation);
 
     _isBookingInProgress = false;
-    _recalculate();
-    notifyListeners();
 
     if (!context.mounted) return;
 
     if (success) {
+      // 1. Close any open modal bottom sheet first
+      Navigator.of(context, rootNavigator: false).popUntil((route) => route.isFirst);
+
+      // 2. Clear selected room before recalculation so it does not trigger a collision error
+      _selectedRoom = null;
+      _recalculate();
+      notifyListeners();
+
+      // 3. Display success confirmation dialog
       await DialogSnackbarHelper.showSuccessDialog(
         context,
         title: 'Booking Confirmed!',
         message:
             'Booking Reference: ${reservation.id}\nRoom: ${room.roomCode} - ${room.roomType}\nDates: ${DateFormatter.formatShort(inDate)} to ${DateFormatter.formatShort(outDate)}\nNights: $nights\nTotal Paid: $totalFormatted',
-        onDismiss: () {
-          // Reset selection after successful booking
-          reset();
-        },
       );
     } else {
+      _recalculate();
+      notifyListeners();
       DialogSnackbarHelper.showErrorSnackBar(
         context,
         'Booking failed. The room was booked by someone else for these dates.',
