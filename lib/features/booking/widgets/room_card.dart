@@ -85,12 +85,14 @@ class RoomCard extends StatelessWidget {
                           Text(
                             room.roomType,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: !isAvailable
                                   ? AppColors.textMuted
                                   : AppColors.textPrimary,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           // Guest capacity
@@ -102,11 +104,14 @@ class RoomCard extends StatelessWidget {
                                 color: AppColors.textSecondary,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                'Max ${room.maxGuests} Guests',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textSecondary,
+                              Flexible(
+                                child: Text(
+                                  'Max ${room.maxGuests} Guests',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],

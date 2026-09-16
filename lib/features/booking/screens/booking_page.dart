@@ -4,6 +4,7 @@ import '../controllers/booking_controller.dart';
 import '../widgets/booking_summary_card.dart';
 import '../widgets/date_selector_bar.dart';
 import '../widgets/guest_filter_chips.dart';
+import '../widgets/mobile_pinned_booking_bar.dart';
 import '../widgets/room_card.dart';
 
 class BookingPage extends StatefulWidget {
@@ -47,26 +48,30 @@ class _BookingPageState extends State<BookingPage> {
               child: const Icon(Icons.hotel, color: Colors.white, size: 20),
             ),
             const SizedBox(width: 12),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'RAINTECH LUXURY SUITES',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.8,
-                    color: AppColors.textPrimary,
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'RAINTECH LUXURY SUITES',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.8,
+                      color: AppColors.textPrimary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Text(
-                  'Hotel Room Booking System',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.textSecondary,
+                  Text(
+                    'Hotel Room Booking System',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -83,6 +88,9 @@ class _BookingPageState extends State<BookingPage> {
           child: Divider(height: 1, color: AppColors.border),
         ),
       ),
+      bottomNavigationBar: MediaQuery.sizeOf(context).width < 850
+          ? MobilePinnedBookingBar(controller: _controller)
+          : null,
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {
@@ -194,12 +202,14 @@ class _BookingPageState extends State<BookingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Available Rooms (${rooms.length})',
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+              Expanded(
+                child: Text(
+                  'Available Rooms (${rooms.length})',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               const Text(
@@ -223,9 +233,7 @@ class _BookingPageState extends State<BookingPage> {
                 onSelect: () => _controller.selectRoom(room),
               ),
             ),
-          const SizedBox(height: 12),
-          BookingSummaryCard(controller: _controller),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
         ],
       ),
     );
