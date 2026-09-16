@@ -42,9 +42,9 @@ class BookingController extends ChangeNotifier {
   void setCheckIn(DateTime date) {
     _checkIn = DateTime(date.year, date.month, date.day);
 
-    // If check-out is not set or not after check-in, auto-set check-out to check-in + 1 day
-    if (_checkOut == null || !_checkOut!.isAfter(_checkIn!)) {
-      _checkOut = _checkIn!.add(const Duration(days: 1));
+    // If existing check-out is before or same day as new check-in, reset check-out
+    if (_checkOut != null && !_checkOut!.isAfter(_checkIn!)) {
+      _checkOut = null;
     }
 
     _recalculate();
@@ -154,8 +154,10 @@ class BookingController extends ChangeNotifier {
       // 1. Close any open modal bottom sheet first
       Navigator.of(context, rootNavigator: false).popUntil((route) => route.isFirst);
 
-      // 2. Clear selected room before recalculation so it does not trigger a collision error
+      // 2. Clear selected room and dates so the form resets cleanly
       _selectedRoom = null;
+      _checkIn = null;
+      _checkOut = null;
       _recalculate();
       notifyListeners();
 
