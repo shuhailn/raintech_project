@@ -6,7 +6,7 @@ Developed for the **Raintech Software Limited** Developer Skills Assessment.
 
 ---
 
-## 🚀 Live Demo & How to Run
+##  Live Demo & How to Run
 
 ### Prerequisites
 - [Flutter SDK](https://flutter.dev) (v3.35.0 or compatible) or [FVM (Flutter Version Management)](https://fvm.app/)
@@ -46,7 +46,7 @@ All **11 unit and widget tests** run and pass in under 5 seconds.
 
 ---
 
-## 📋 Features Implemented
+##  Features Implemented
 
 ### Core Requirements
 - **Hotel Room Directory**: Displays all sample rooms directly from hardcoded specifications:
@@ -67,7 +67,7 @@ All **11 unit and widget tests** run and pass in under 5 seconds.
   - **Reverse date selection**: Prevented with alert: *"Check-out date must be after check-in date"*.
   - **Missing room or dates**: Clear guidance banner informing user what step is missing.
 
-### 🌟 Bonus Features Included
+###  Bonus Features Included
 1. **Double-Booking Collision Prevention**:
    - Rooms can have existing bookings (e.g., `R102` and `R201` have mock reserved dates).
    - If a user selects dates that overlap with an existing reservation, the room is clearly flagged as **"Booked for selected dates"**, dimmed, and blocked from selection.
