@@ -42,8 +42,8 @@ class BookingController extends ChangeNotifier {
   void setCheckIn(DateTime date) {
     _checkIn = DateTime(date.year, date.month, date.day);
 
-    // If check-out is before or equal to new check-in, auto-advance check-out by 1 day
-    if (_checkOut != null && !_checkOut!.isAfter(_checkIn!)) {
+    // If check-out is not set or not after check-in, auto-set check-out to check-in + 1 day
+    if (_checkOut == null || !_checkOut!.isAfter(_checkIn!)) {
       _checkOut = _checkIn!.add(const Duration(days: 1));
     }
 

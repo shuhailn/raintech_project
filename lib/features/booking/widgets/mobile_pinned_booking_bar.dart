@@ -57,11 +57,14 @@ class MobilePinnedBookingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final calc = controller.calculation;
-    final hasDates = controller.checkIn != null && controller.checkOut != null;
-    final hasRoom = controller.selectedRoom != null;
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        final calc = controller.calculation;
+        final hasDates = controller.checkIn != null && controller.checkOut != null;
+        final hasRoom = controller.selectedRoom != null;
 
-    return Container(
+        return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
         boxShadow: [
@@ -184,19 +187,15 @@ class MobilePinnedBookingBar extends StatelessWidget {
               const SizedBox(width: 12),
               // Right Section: Action Button
               ElevatedButton(
-                onPressed: controller.isBookingInProgress
+                onPressed: (!calc.isValid || controller.isBookingInProgress)
                     ? null
-                    : () {
-                        if (calc.isValid) {
-                          controller.confirmBooking(context);
-                        } else {
-                          _openDetailsBottomSheet(context);
-                        }
-                      },
+                    : () => _openDetailsBottomSheet(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: calc.isValid ? AppColors.primary : AppColors.surfaceMuted,
-                  foregroundColor: calc.isValid ? Colors.white : AppColors.textSecondary,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  backgroundColor: AppColors.primary,
+                  disabledBackgroundColor: AppColors.surfaceMuted,
+                  foregroundColor: Colors.white,
+                  disabledForegroundColor: AppColors.textMuted,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -211,9 +210,9 @@ class MobilePinnedBookingBar extends StatelessWidget {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : Text(
-                        calc.isValid ? 'Book Now' : 'View Details',
-                        style: const TextStyle(
+                    : const Text(
+                        'Book',
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -223,6 +222,8 @@ class MobilePinnedBookingBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }

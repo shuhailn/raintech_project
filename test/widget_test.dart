@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hotel_booking_app/features/booking/screens/booking_page.dart';
 import 'package:hotel_booking_app/features/booking/widgets/mobile_pinned_booking_bar.dart';
+import 'package:hotel_booking_app/features/booking/widgets/room_card.dart';
 import 'package:hotel_booking_app/main.dart';
 
 void main() {
-  testWidgets('HotelBookingApp smoke test renders mobile layout with pinned bar', (
+  testWidgets('HotelBookingApp mobile layout greyed-out Book button and bottom sheet rise', (
     WidgetTester tester,
   ) async {
     // Set screen size to mobile
@@ -28,11 +29,49 @@ void main() {
     // Verify pinned mobile booking bar is present
     expect(find.byType(MobilePinnedBookingBar), findsOneWidget);
 
-    // Tap the chevron (^) to open bottom sheet details
+    // 1. Initial state: Book button is greyed-out / disabled
+    final bookBtnFinder = find.widgetWithText(ElevatedButton, 'Book');
+    expect(bookBtnFinder, findsOneWidget);
+    final initialButton = tester.widget<ElevatedButton>(bookBtnFinder);
+    expect(initialButton.onPressed, isNull);
+
+    // 2. Chevron (^) can open the details bottom sheet
     await tester.tap(find.byIcon(Icons.keyboard_arrow_up));
     await tester.pumpAndSettle();
 
     // Verify booking summary details sheet appears
+    expect(find.text('Booking Summary'), findsOneWidget);
+
+    // Close the bottom sheet
+    final navigator = tester.state<NavigatorState>(find.byType(Navigator).last);
+    navigator.pop();
+    await tester.pumpAndSettle();
+
+    // 3. Select Check-in date
+    await tester.tap(find.text('CHECK-IN'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('SELECT'));
+    await tester.pumpAndSettle();
+
+    // 4. Select Check-out date
+    await tester.tap(find.text('CHECK-OUT'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('SELECT'));
+    await tester.pumpAndSettle();
+
+    // 5. Select the first Room
+    await tester.tap(find.byType(RoomCard).first);
+    await tester.pumpAndSettle();
+
+    // 6. Button is now active and colored
+    final activeButton = tester.widget<ElevatedButton>(bookBtnFinder);
+    expect(activeButton.onPressed, isNotNull);
+
+    // 7. Tapping active Book button gives the bottom sheet rise
+    await tester.tap(bookBtnFinder);
+    await tester.pumpAndSettle();
+
+    // Verify details bottom sheet opened
     expect(find.text('Booking Summary'), findsOneWidget);
   });
 
