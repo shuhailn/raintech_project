@@ -150,7 +150,7 @@ class InMemoryBookingService implements BookingService {
       );
     }
 
-    // Capacity validation (bonus feature)
+    // Capacity validation 
     if (guestCount != null && guestCount > room.maxGuests) {
       return BookingCalculation.invalid(
         status: BookingValidationStatus.exceedsMaxGuests,
@@ -161,7 +161,7 @@ class InMemoryBookingService implements BookingService {
       );
     }
 
-    // Room collision check (bonus feature)
+    // Room collision check 
     if (!isRoomAvailable(room.roomCode, normalizedCheckIn, normalizedCheckOut)) {
       return BookingCalculation.invalid(
         status: BookingValidationStatus.roomUnavailable,
