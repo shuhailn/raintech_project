@@ -122,10 +122,4 @@ test/
 - **Normalized Date Arithmetic**: All date comparisons are normalized to midnight (`DateTime(year, month, day)`) to prevent daylight savings shifts or hour/minute discrepancies from causing off-by-one night calculations.
 - **Adaptive Layout**: Responsive design with desktop two-column view (>=850px width) and mobile single-column vertical flow (<850px width).
 
----
 
-## ⏱️ What I Would Improve With More Time
-1. **Multi-room Bookings**: Allow guests to book multiple rooms across different categories in a single reservation.
-2. **Add-on Services**: Include optional breakfast, airport transfer, or extra bed add-ons dynamically updated in the price breakdown.
-3. **Backend Persistence & Authentication**: Connect to Firebase Firestore or a REST API with JWT authentication for persistent user bookings.
-4. **Interactive Calendar Range Picker**: Add a visual month calendar popup highlighting booked dates in real-time.
